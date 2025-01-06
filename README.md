@@ -20,13 +20,25 @@ https://www.transitchicago.com/developers/bustracker/
 ## Usage
 
 ```
-bus_service = BusTime.new(API_KEY, API_URL)
-routes = bus_service.getRoutes # [BusRoute...]
+# Initialize
+bus_service = BusTime.connection(API_KEY, API_URL?)
+
+# Get current service time
+bus_service.get_time # YYYYMMDD HH:MM:SS
+
+# Get all routes
+routes = bus_service.get_routes # [<BusRoute id: <String>, name: <String>, directions: [], stops: []>,... ]
+
+# Get a single route
+route = bus_service.get_route(route_id) # <BusRoute { id: <String>, name: <String>, directions: [<String>,...], stops: [<BusStop>,...]}
+
+# Get a single stop
+stop = bus_service.get_stop(stop_id) # <BusStop { }
 ```
 
 `API_URL` defaults to "https://ctabustracker.com/bustime/api/v2"
 
-Consult the developer documentation for other services' urls
+Consult the service provider's developer documentation for non-CTA service URLs.
 
 ## To-Do
 
@@ -35,4 +47,3 @@ Consult the developer documentation for other services' urls
 ## Author
 
 [G. Turner](mailto:contact@iamgturner.com)
-# bus_time
