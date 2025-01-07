@@ -40,6 +40,20 @@ stop = bus_service.get_stop(stop_id) # <BusStop { }
 
 Consult the service provider's developer documentation for non-CTA service URLs.
 
+## Limitations
+
+`bus_time` is focused on retrieving stop predictions. Consequently, this gem is currently...
+
+- Not optimized for _BusTime v3_ dynamic features
+
+- Does not support vehicle requests
+
+- Does not support pattern requests
+
+- Does have `Real-Time Passenger` support
+
+- Does not have locale support
+
 ## To-Do
 
 - Deprecate API_URL with known APIs and API versions
