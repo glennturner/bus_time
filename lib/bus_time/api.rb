@@ -37,6 +37,23 @@ module BusTime
       )["directions"].map { |direction| direction["dir"] }
     end
 
+    def get_stops_by_ids(stop_ids)
+      get_stops_by_params(stpid: stop_ids)
+    end
+
+    def get_stops(route_id, direction)
+      get_stops_by_params(rt: route_id, dir: direction)
+    end
+
+    def get_predictions(stop_id)
+      request("getpredictions",
+        { stpid: stop_id }
+      )["prd"].map do |prediction|
+        BusTime::BusPrediction.new(
+        )
+      end
+    end
+
     private
 
     def request(action, params = {})
@@ -64,8 +81,20 @@ module BusTime
       uri
     end
 
-    def handle_request_response(res)
-      JSON.parse(res.body)[BASE_RESPONSE_PROP]
+    def get_stops_by_params(params)
+      request("getstops", params)["stops"].map do |stop|
+        BusTime::BusStop.new(stop["stpid"], stop["stpnm"])
+      end
+    end
+
+    def handle_request_response(response)
+      processed = JSON.parse(response.body)[BASE_RESPONSE_PROP]
+
+      if processed["error"]
+        raise ArgumentError, "Error: #{response["error"]}"
+      end
+
+      processed
     end
   end
 end
