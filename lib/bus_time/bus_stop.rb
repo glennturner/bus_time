@@ -14,7 +14,9 @@ module BusTime
       @direction = direction
     end
 
-    def distanceFrom(lat, lon)
+    # Use `geocoder` gem to calculate distance between two points
+    # Geocoder::Calculations.distance_between([lat1, lon1], [lat2, lon2])
+    def distance_from(lat, lon)
       #  getDistanceFromLatLonInKm(lat, lon, @lat, @lon)
     end
   end
