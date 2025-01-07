@@ -22,7 +22,10 @@ module BusTime
         body: JSON.generate(expected_routes_body)
       )
 
-      @bus_time.get_routes.each { |route|
+      routes = @bus_time.get_routes
+      assert_not_empty routes
+
+      routes.each { |route|
         assert_include expected_route_ids, route.id
       }
     end
@@ -44,7 +47,15 @@ module BusTime
       )
 
       route = @bus_time.get_route(route_id)
-      p route
+      assert_equal route_id, route.id
+    end
+
+    def test_get_stops
+      stub_request_action("getstops", { rt: expected_route_ids.first}).to_return(
+        body: JSON.generate(expected_body)
+      )
+
+      assert false, "WIP"
     end
 
     def test_bad_request_action
