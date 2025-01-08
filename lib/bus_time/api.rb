@@ -5,6 +5,7 @@ module BusTime
     SUPPORTED_ACTIONS = %w[
       gettime getroutes getvehicles getpatterns
       getpredictions getservicebulletins getdirections
+      getstops
     ]
 
     BASE_RESPONSE_PROP = "bustime-response"
@@ -26,7 +27,11 @@ module BusTime
 
     def get_route(id)
       route = get_routes.find { |route| id == id }
-      route.directions = get_directions(id)
+
+      # Get route stops
+      route.directions.each do |dir|
+        route.stops += get_stops(route.id, dir)
+      end
 
       route
     end
@@ -35,10 +40,6 @@ module BusTime
       request("getdirections",
         { rt: route_id }
       )["directions"].map { |direction| direction["dir"] }
-    end
-
-    def get_stops_by_ids(stop_ids)
-      get_stops_by_params(stpid: stop_ids)
     end
 
     def get_stops(route_id, direction)
@@ -83,7 +84,11 @@ module BusTime
 
     def get_stops_by_params(params)
       request("getstops", params)["stops"].map do |stop|
-        BusTime::BusStop.new(stop["stpid"], stop["stpnm"])
+        BusTime::BusStop.new(
+          stop["stpid"], stop["stpnm"],
+          coords: [ stop["lat"], stop["lon"] ],
+          direction: params[:dir]
+        )
       end
     end
 
@@ -91,7 +96,9 @@ module BusTime
       processed = JSON.parse(response.body)[BASE_RESPONSE_PROP]
 
       if processed["error"]
-        raise ArgumentError, "Error: #{response["error"]}"
+        raise ArgumentError, "Error: #{
+          processed["error"].map { |err| err["msg"] }.join(", ")
+        }"
       end
 
       processed
