@@ -2,13 +2,29 @@ module BusTime
   class BusRoute
     attr_reader :id, :name
 
-    attr_writer :directions, :stops
+    attr_accessor :directions, :stops
 
-    def initialize(id, name, stops: [], directions: [])
+    def initialize(id, name)
       @id = id
       @name = name
-      @directions = directions
-      @stops = stops
+    end
+
+    def directions
+      @directions || get_directions
+    end
+
+    def stops
+      @stops || get_stops
+    end
+
+    def get_directions
+      @directions = BusTime.api.get_directions(@id)
+    end
+
+    def get_stops
+      @directions.each do |direction|
+        @stops = BusTime.api.get_stops(@id, direction)
+      end
     end
 
     def display_name
