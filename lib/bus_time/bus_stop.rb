@@ -1,28 +1,31 @@
-module BusTime
-  class BusStop
-    attr_reader :id, :name, :lat, :lon, :predictions
+# frozen_string_literal: true
 
-    attr_accessor  :direction, :routes
+# Service bus stop handling, including prediction retrieval via `BusTime::Api`
+class BusTime::BusStop
+  attr_reader :id, :name, :lat, :lon
 
-    def initialize(id, name, coords:, direction:, routes: [])
-      @id = id
-      @name = name
-      @lat, @lon = coords
-      @direction = direction
+  attr_writer :predictions
 
-      @routes = routes
-    end
+  attr_accessor :direction, :routes
 
-    def predictions
-      @predictions || get_predictions
-    end
+  def initialize(id, name, coords:, direction:, routes: [])
+    @id = id
+    @name = name
+    @lat, @lon = coords
+    @direction = direction
 
-    def get_predictions
-      @predictions = BusTime.api.get_predictions(@id)
-    end
+    @routes = routes
+  end
 
-    def distance_from(lat, lon)
-      Geocoder::Calculations.distance_between([ @lat, @lon ], [ lat, lon ])
-    end
+  def predictions
+    @predictions || fetch_predictions
+  end
+
+  def fetch_predictions
+    @predictions = BusTime.api.fetch_predictions(@id)
+  end
+
+  def distance_from(lat, lon)
+    Geocoder::Calculations.distance_between([@lat, @lon], [lat, lon])
   end
 end

@@ -23,17 +23,33 @@ https://www.transitchicago.com/developers/bustracker/
 # Initialize
 bus_service = BusTime.connection(API_KEY, API_URL?)
 
-# Get current service time
-bus_service.get_time # YYYYMMDD HH:MM:SS
+# General use
 
 # Get all routes
-routes = bus_service.get_routes # [<BusRoute id: <String>, name: <String>, directions: [], stops: []>,... ]
+routes = bus_service.fetch_routes # [<BusRoute id: <String>, name: <String>, directions: [], stops: []>,...]
+
+# Get route directions
+route.directions # [<String>,...]
+
+# Get route stops
+route.stops  # [<BusStop { id: <String>, name: <String>, lat: <Float>, lon: <Float>, direction: <String>, routes: <Array[<String>,...],...] }
+
+# Get stop predictions
+route.stops.first.predictions # [<Prediction { }]
+
+# API interface, if necessary
+
+# Get current service time
+bus_service.fetch_time # YYYYMMDD HH:MM:SS
 
 # Get a single route
-route = bus_service.get_route(route_id) # <BusRoute { id: <String>, name: <String>, directions: [<String>,...], stops: [<BusStop>,...]}
+route = bus_service.fetch_route(route_id)
 
 # Get a single stop
-stop = bus_service.get_stop(stop_id) # <BusStop { }
+stop = bus_service.fetch_stop(stop_id)
+
+# Get predictions for a stop
+predictions = bus_service.fetch_predictions(stop_id)
 ```
 
 `API_URL` defaults to "https://ctabustracker.com/bustime/api/v2"
@@ -42,7 +58,8 @@ Consult the service provider's developer documentation for non-CTA service URLs.
 
 ## Limitations
 
-`bus_time` is focused on retrieving stop predictions. Consequently, this gem is currently...
+`bus_time` is focused on retrieving stop predictions. Consequently,
+this gem is currently...
 
 - Not optimized for _BusTime v3_ dynamic features
 
