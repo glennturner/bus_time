@@ -1,8 +1,11 @@
 module BusTime
   class Prediction
-    attr_reader :prediction_time, :prediction_type, :direction
+    attr_reader :time, :prediction_type, :delay, :generated_at
 
-    def initialize(prediction_time, prediction_type:, direction:)
+    def initialize(arrives_at, delayed: false, generated_at: DateTime.now)
+      @arrives_at = arrives_at
+      @delayed = delayed
+      @generated_at = generated_at
     end
   end
 end
