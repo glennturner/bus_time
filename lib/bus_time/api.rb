@@ -87,7 +87,8 @@ module BusTime
         BusTime::BusStop.new(
           stop["stpid"], stop["stpnm"],
           coords: [ stop["lat"], stop["lon"] ],
-          direction: params[:dir]
+          direction: params[:dir],
+          routes: [ params[:rt] ]
         )
       end
     end
