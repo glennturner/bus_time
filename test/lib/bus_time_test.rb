@@ -31,28 +31,16 @@ module BusTime
     end
 
     def test_get_route_by_id
-      route_id = expected_route_ids.first
-      expected_directions_body = {
-        "bustime-response" => {
-          "directions" => [{"dir"=>"Northbound"}, {"dir"=>"Southbound"}]
-        }
-      }
-
-      stub_request_action("getroutes").to_return(
-        body: JSON.generate(expected_routes_body)
-      )
-
-      stub_request_action("getdirections", { rt: route_id }).to_return(
-        body: JSON.generate(expected_directions_body)
-      )
-
+      route_id = expected_route["rt"]
       route = @bus_time.get_route(route_id)
+
       assert_equal route_id, route.id
+      assert_not_empty route.directions
     end
 
     def test_get_stops
-      stub_request_action("getstops", { rt: expected_route_ids.first}).to_return(
-        body: JSON.generate(expected_body)
+      stub_request_action("getstops", { rt: expected_route_ids.first }).to_return(
+        body: JSON.generate(expected_stops_body)
       )
 
       assert false, "WIP"
