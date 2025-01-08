@@ -1,17 +1,20 @@
 module BusTime
   class BusStop
-    attr_reader :id, :name, :lat, :lon
+    attr_reader :id, :name, :lat, :lon, :predictions
 
-    attr_accessor  :direction, :predictions, :routes
+    attr_accessor  :direction, :routes
 
-    def initialize(id, name, coords:, direction:, predictions: [], routes: [])
+    def initialize(id, name, coords:, direction:, routes: [])
       @id = id
       @name = name
       @lat, @lon = coords
-
-      @predictions = predictions
-      @routes = routes
       @direction = direction
+
+      @routes = routes
+    end
+
+    def predictions
+      @predictions || get_predictions
     end
 
     def get_predictions
