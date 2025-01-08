@@ -70,6 +70,11 @@ module BusTime
       }
     end
 
+    def expected_stops
+      expected_directions_body[BusTime::Api::BASE_RESPONSE_PROP]["directions"]
+    end
+
+
     def expected_routes
       expected_routes_body[BusTime::Api::BASE_RESPONSE_PROP]["routes"]
     end

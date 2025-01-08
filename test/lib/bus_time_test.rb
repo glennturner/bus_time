@@ -39,11 +39,23 @@ module BusTime
     end
 
     def test_get_stops
-      stub_request_action("getstops", { rt: expected_route_ids.first }).to_return(
+      route = expected_route
+      route_id = route["rt"]
+      direction = expected_directions.first["dir"]
+      stub_request_action("getstops", {
+        rt: route_id,
+        dir: direction
+      }).to_return(
         body: JSON.generate(expected_stops_body)
       )
 
-      assert false, "WIP"
+      stops = @bus_time.get_stops(route_id, direction)
+
+      assert_not_empty stops
+      stops.each do |stop|
+        assert_include stop.routes, route_id
+        assert_equal direction, stop.direction
+      end
     end
 
     def test_bad_request_action
