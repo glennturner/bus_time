@@ -1,23 +1,25 @@
 module BusTime
   class BusStop
-    attr_reader :id, :name, :direction, :lat, :lon, :routes
+    attr_reader :id, :name, :lat, :lon
 
-    attr_accessor :predictions
+    attr_accessor  :direction, :predictions, :routes
 
-    def initialize(id, name, direction:, lat:, lon:, predictions: [], routes: [])
+    def initialize(id, name, coords:, direction:, predictions: [], routes: [])
       @id = id
       @name = name
-      @lat = lat
-      @lon = lon
+      @lat, @lon = coords
+
       @predictions = predictions
       @routes = routes
       @direction = direction
     end
 
-    # Use `geocoder` gem to calculate distance between two points
-    # Geocoder::Calculations.distance_between([lat1, lon1], [lat2, lon2])
+    def get_predictions
+      @predictions = BusTime.api.get_predictions(@id)
+    end
+
     def distance_from(lat, lon)
-      #  getDistanceFromLatLonInKm(lat, lon, @lat, @lon)
+      Geocoder::Calculations.distance_between([ @lat, @lon ], [ lat, lon ])
     end
   end
 end
