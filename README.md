@@ -50,13 +50,15 @@ Consult the service provider's developer documentation for non-CTA service URLs.
 
 - Does not support pattern requests
 
-- Does have `Real-Time Passenger` support
+- Does not have `Real-Time Passenger` support
 
 - Does not have locale support
 
 ## To-Do
 
 - Deprecate API_URL with known APIs and API versions
+
+- Add support for `Dynamic Action Types`
 
 ## Author
 
