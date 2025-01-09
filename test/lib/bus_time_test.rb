@@ -43,6 +43,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     route = expected_route
     route_id = route["rt"]
     direction = expected_directions.first["dir"]
+
     stub_request_action(
       "getstops", { rt: route_id, dir: direction }
     ).to_return(body: JSON.generate(expected_stops_body))
@@ -53,6 +54,23 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
       assert_include stop.routes, route_id
       assert_equal direction, stop.direction
     end
+  end
+
+  def test_fetch_predictions
+    stop_id = expected_stops.first["stpid"]
+
+    stub_request_action(
+      "getpredictions", { stpid: stop_id }
+    ).to_return(body: JSON.generate(expected_predictions_body))
+
+    predictions = @bus_time.fetch_predictions(stop_id)
+
+    assert_not_empty predictions
+    assert_equal predictions.first.stop_id, stop_id
+  end
+
+  def test_fetch_bulletins
+    assert false, "Not implemented"
   end
 
   def test_bad_request_action

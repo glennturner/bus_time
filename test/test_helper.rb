@@ -5,6 +5,8 @@ require "webmock/test_unit"
 require "bus_time"
 
 class BusTime::BusTimeTest < Test::Unit::TestCase
+  DEFAULT_TS_FORMAT = "%Y%m%d %h:%m"
+
   def setup
     @bus_time = BusTime.connection("FAKE_API_KEY")
 
@@ -58,6 +60,30 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     expected_directions_body[BusTime::Api::BASE_RESPONSE_PROP]["directions"]
   end
 
+  def expected_predictions_body
+    {
+      BusTime::Api::BASE_RESPONSE_PROP => {
+        "prd" => [
+          {
+            "rt" => "52",
+            "rtdir" => "Northbound",
+            "stpid" => "3133",
+            "prdctdn" => "5",
+            "typ" => "A",
+            "dly" => false,
+            "stpnm" => "3201 S Kedzie",
+            "prdtm" => (Time.now + 300).strftime(DEFAULT_TS_FORMAT),
+            "tmstmp" => Time.now.strftime(DEFAULT_TS_FORMAT)
+          }
+        ]
+      }
+    }
+  end
+
+  def expected_prop(prop)
+    expected_stops_body[BusTime::Api::BASE_RESPONSE_PROP][prop]
+  end
+
   def expected_stops_body
     {
       BusTime::Api::BASE_RESPONSE_PROP => {
@@ -74,7 +100,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
   end
 
   def expected_stops
-    expected_directions_body[BusTime::Api::BASE_RESPONSE_PROP]["directions"]
+    expected_stops_body[BusTime::Api::BASE_RESPONSE_PROP]["stops"]
   end
 
   def expected_routes
