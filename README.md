@@ -50,6 +50,13 @@ stop = bus_service.fetch_stop(stop_id)
 
 # Get predictions for a stop
 predictions = bus_service.fetch_predictions(stop_id)
+
+# Get nearby stops for a route
+# (Nearby stops default to 0.5 miles)
+stops = bus_service.route.nearby_stops
+
+# Change nearby mile radius:
+bus_service.nearby_distance = 2
 ```
 
 `API_URL` defaults to "https://ctabustracker.com/bustime/api/v2"
@@ -58,25 +65,23 @@ Consult the service provider's developer documentation for non-CTA service URLs.
 
 ## Limitations
 
-`bus_time` is focused on retrieving stop predictions. Consequently, this gem is currently...
+`bus_time` is focused on retrieving stop predictions. Consequently, this gem currently does not support the following:
 
-- Not optimized for _BusTime v3_ dynamic features
+- `BusTime v3` dynamic features
 
-- Does not support vehicle requests
+- Vehicle requests
 
-- Does not support pattern requests
+- Pattern requests
 
-- Does not have `Real-Time Passenger` support
+- `Real-Time Passenger` handling
 
-- Does not have locale support
+- Locale language support
 
 ## To-Do
 
 - Complete service bulletin support
 
 - Deprecate API_URL with known APIs and API versions
-
-- Add support for `Dynamic Action Types`
 
 ## Author
 
