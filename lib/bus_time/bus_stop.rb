@@ -26,6 +26,8 @@ class BusTime::BusStop
   end
 
   def distance_from(lat, lon)
+    require "geocoder"
+
     Geocoder::Calculations.distance_between([@lat, @lon], [lat, lon])
   end
 
