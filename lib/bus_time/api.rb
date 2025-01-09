@@ -22,7 +22,7 @@ class BusTime::Api
 
   def fetch_routes
     request("getroutes")["routes"].map do |route|
-      BusTime::BusRoute.new(route["rt"], route["rtnm"])
+      assemble_route(route)
     end
   end
 
@@ -49,15 +49,7 @@ class BusTime::Api
 
   def fetch_predictions(stop_id)
     request("getpredictions", { stpid: stop_id })["prd"].map do |prediction|
-      BusTime::Prediction.new(
-        prediction["rt"], prediction["rtdir"], prediction["stpid"],
-        prediction["prdctdn"],
-        arrives_at: DateTime.parse(prediction["prdtm"]),
-        prediction_type: prediction["typ"],
-        delayed: prediction["dly"],
-        stop_name: prediction["stpnm"],
-        generated_at: DateTime.parse(prediction["tmstmp"])
-      )
+      assemble_prediction(prediction)
     end
   end
 
@@ -99,18 +91,12 @@ class BusTime::Api
 
   def fetch_stops_by_params(params)
     request("getstops", params)["stops"].map do |stop|
-      BusTime::BusStop.new(
-        stop["stpid"], stop["stpnm"],
-        coords: [stop["lat"], stop["lon"]],
-        direction: params[:dir],
-        routes: [params[:rt]]
-      )
+      assemble_stop(stop, params)
     end
   end
 
   def handle_request_response(response)
     processed = JSON.parse(response.body)[BASE_RESPONSE_PROP]
-
     if processed["error"]
       raise ArgumentError, "Error: #{
         processed['error'].map { |err| err['msg'] }.join(', ')
@@ -118,5 +104,27 @@ class BusTime::Api
     end
 
     processed
+  end
+
+  def assemble_route(route)
+    BusTime::BusRoute.new(route["rt"], route["rtnm"])
+  end
+
+  def assemble_stop(stop, params = {})
+    BusTime::BusStop.new(stop["stpid"], stop["stpnm"],
+                         coords: [stop["lat"], stop["lon"]],
+                         direction: params[:dir],
+                         routes: [params[:rt]])
+  end
+
+  def assemble_prediction(prediction)
+    BusTime::Prediction.new(prediction["rt"], prediction["rtdir"],
+                            prediction["stpid"],
+                            prediction["prdctdn"],
+                            arrives_at: DateTime.parse(prediction["prdtm"]),
+                            prediction_type: prediction["typ"],
+                            delayed: prediction["dly"],
+                            stop_name: prediction["stpnm"],
+                            generated_at: DateTime.parse(prediction["tmstmp"]))
   end
 end
