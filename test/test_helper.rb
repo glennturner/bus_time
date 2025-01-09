@@ -5,8 +5,6 @@ require "webmock/test_unit"
 require "bus_time"
 
 class BusTime::BusTimeTest < Test::Unit::TestCase
-  DEFAULT_TS_FORMAT = "%Y%m%d %h:%m"
-
   def setup
     @bus_time = BusTime.connection("FAKE_API_KEY")
 
@@ -92,8 +90,8 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
         "typ" => "A",
         "dly" => false,
         "stpnm" => "3201 S Kedzie",
-        "prdtm" => (Time.now + 300).strftime(DEFAULT_TS_FORMAT),
-        "tmstmp" => Time.now.strftime(DEFAULT_TS_FORMAT)
+        "prdtm" => (Time.now + 300).strftime(BusTime::DEFAULT_TS_FORMAT),
+        "tmstmp" => Time.now.strftime(BusTime::DEFAULT_TS_FORMAT)
       }
     ]
   end
