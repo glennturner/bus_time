@@ -58,8 +58,7 @@ Consult the service provider's developer documentation for non-CTA service URLs.
 
 ## Limitations
 
-`bus_time` is focused on retrieving stop predictions. Consequently,
-this gem is currently...
+`bus_time` is focused on retrieving stop predictions. Consequently, this gem is currently...
 
 - Not optimized for _BusTime v3_ dynamic features
 
@@ -72,6 +71,8 @@ this gem is currently...
 - Does not have locale support
 
 ## To-Do
+
+- Complete service bulletin support
 
 - Deprecate API_URL with known APIs and API versions
 
