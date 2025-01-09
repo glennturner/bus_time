@@ -6,6 +6,7 @@
 #
 # @author Glenn Turner
 module BusTime
+  DEFAULT_TS_FORMAT = "%Y%m%d %h:%m"
   MAX_NEARBY_DISTANCE = 0.5
 
   def self.connection(api_key, api_url = nil)
