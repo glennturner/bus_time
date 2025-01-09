@@ -28,4 +28,8 @@ class BusTime::BusStop
   def distance_from(lat, lon)
     Geocoder::Calculations.distance_between([@lat, @lon], [lat, lon])
   end
+
+  def nearby?(lat, lon, max_nearby_distance = BusTime.nearby_distance)
+    distance_from(lat, lon) <= max_nearby_distance
+  end
 end
