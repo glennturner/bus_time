@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-# Interface to the BusTime API and process request responses
+# BusTime API interface and response handling
 class BusTime::Api
   attr_accessor :api_key, :api_url
 
   SUPPORTED_ACTIONS = %w[
-    gettime getroutes getvehicles getpatterns
-    getpredictions getservicebulletins getdirections
-    getstops
+    gettime getroutes getdirections
+    getstops getpredictions getservicebulletins
   ].freeze
 
   BASE_RESPONSE_PROP = "bustime-response"
@@ -39,8 +38,9 @@ class BusTime::Api
   end
 
   def fetch_directions(route_id)
-    request("getdirections",
-            { rt: route_id })["directions"].map { |direction| direction["dir"] }
+    request("getdirections", { rt: route_id })["directions"].map do |direction|
+      direction["dir"]
+    end
   end
 
   def fetch_stops(route_id, direction)
@@ -48,9 +48,24 @@ class BusTime::Api
   end
 
   def fetch_predictions(stop_id)
-    request("getpredictions",
-            { stpid: stop_id })["prd"].map do |_prediction|
-      BusTime::BusPrediction.new
+    request("getpredictions", { stpid: stop_id })["prd"].map do |prediction|
+      BusTime::Prediction.new(
+        prediction["rt"], prediction["rtdir"], prediction["stpid"],
+        prediction["prdctdn"],
+        arrives_at: DateTime.parse(prediction["prdtm"]),
+        prediction_type: prediction["typ"],
+        delayed: prediction["dly"],
+        stop_name: prediction["stpnm"],
+        generated_at: DateTime.parse(prediction["tmstmp"])
+      )
+    end
+  end
+
+  def fetch_bulletins
+    request("getservicebulletins")["sb"].map do |bulletin|
+      BusTime::Bulletin.new(
+        bulletin["nm"]
+      )
     end
   end
 
