@@ -3,7 +3,7 @@
 require "test_helper"
 
 class BusTime::BusTimeTest < Test::Unit::TestCase
-  def test_fetch_time
+  test "fetch time" do
     service_time = "20250104 21:35:14"
     expected_time_body = {
       "bustime-response" => {
@@ -18,7 +18,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     assert_equal service_time, @bus_time.fetch_time
   end
 
-  def test_fetch_routes
+  test "fetch routes" do
     stub_request_action("getroutes").to_return(
       body: JSON.generate(expected_body("routes"))
     )
@@ -31,7 +31,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     end
   end
 
-  def test_fetch_route_by_id
+  test "fetch route by id" do
     route_id = expected_route["rt"]
     route = @bus_time.fetch_route(route_id)
 
@@ -39,7 +39,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     assert_not_empty route.directions
   end
 
-  def test_fetch_stops
+  test "fetch stops" do
     route = expected_route
     route_id = route["rt"]
     direction = expected_directions.first["dir"]
@@ -56,7 +56,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     end
   end
 
-  def test_fetch_predictions
+  test "fetch predictions" do
     stop_id = expected_stops.first["stpid"]
 
     stub_request_action(
@@ -69,11 +69,11 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     assert_equal predictions.first.stop_id, stop_id
   end
 
-  def test_fetch_bulletins
+  test "fetch bulletins" do
     assert false, "Not implemented"
   end
 
-  def test_bad_request_action
+  test "error raised on malformed request" do
     action = "malformedrequest"
     stub_request_action("getroutes").to_return(
       status: 404
