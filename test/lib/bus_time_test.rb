@@ -5,14 +5,14 @@ require "test_helper"
 class BusTime::BusTimeTest < Test::Unit::TestCase
   def test_fetch_time
     service_time = "20250104 21:35:14"
-    expected_body = {
+    expected_time_body = {
       "bustime-response" => {
         "tm" => service_time
       }
     }
 
     stub_request_action("gettime").to_return(
-      body: JSON.generate(expected_body)
+      body: JSON.generate(expected_time_body)
     )
 
     assert_equal service_time, @bus_time.fetch_time
@@ -20,7 +20,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
 
   def test_fetch_routes
     stub_request_action("getroutes").to_return(
-      body: JSON.generate(expected_routes_body)
+      body: JSON.generate(expected_body("routes"))
     )
 
     routes = @bus_time.fetch_routes
@@ -46,7 +46,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
 
     stub_request_action(
       "getstops", { rt: route_id, dir: direction }
-    ).to_return(body: JSON.generate(expected_stops_body))
+    ).to_return(body: JSON.generate(expected_body("stops")))
 
     stops = @bus_time.fetch_stops(route_id, direction)
     assert_not_empty stops
@@ -61,7 +61,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
 
     stub_request_action(
       "getpredictions", { stpid: stop_id }
-    ).to_return(body: JSON.generate(expected_predictions_body))
+    ).to_return(body: JSON.generate(expected_body("predictions")))
 
     predictions = @bus_time.fetch_predictions(stop_id)
 
