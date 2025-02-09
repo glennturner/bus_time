@@ -61,6 +61,18 @@ class BusTime::Api
     end
   end
 
+  def fetch_routes_and_directions_and_stops
+    routes = fetch_routes
+
+    routes.each do |route|
+      route.directions.each do |dir|
+        route.stops += fetch_stops(route.id, dir)
+      end
+    end
+
+    routes
+  end
+
   private
 
   def request(action, params = {})
