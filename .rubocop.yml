@@ -6,6 +6,8 @@ Gemspec/RequireMFA:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
+Metrics/ClassLength:
+  Enabled: false
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
 Gemspec/AddRuntimeDependency: # new in 1.65
