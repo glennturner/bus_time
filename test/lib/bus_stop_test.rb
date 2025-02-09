@@ -3,7 +3,7 @@
 require "test_helper"
 
 class BusTime::BusStopTest < BusTime::BusTimeTest
-  test "if nearby stops" do
+  test "if has nearby stops" do
     nearby_coords = [41.9809728, -87.6650963]
 
     assert stop.nearby?(nearby_coords[0], nearby_coords[1])
