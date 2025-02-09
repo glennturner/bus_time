@@ -19,47 +19,61 @@ https://www.transitchicago.com/developers/bustracker/
 
 ## Usage
 
-```
-# Initialize
-bus_service = BusTime.connection(API_KEY, API_URL?)
+### Initialize
 
-# General use
-
-# Get all routes
-routes = bus_service.fetch_routes # [<BusRoute id: <String>, name: <String>, directions: [], stops: []>,...]
-
-# Get route directions
-route.directions # [<String>,...]
-
-# Get route stops
-route.stops  # [<BusStop { id: <String>, name: <String>, lat: <Float>, lon: <Float>, direction: <String>, routes: <Array[<String>,...],...] }
-
-# Get stop predictions
-route.stops.first.predictions # [<Prediction { }]
-
-# API interface, if necessary
-
-# Get current service time
-bus_service.fetch_time # YYYYMMDD HH:MM:SS
-
-# Get a single route
-route = bus_service.fetch_route(route_id)
-
-# Get a single stop
-stop = bus_service.fetch_stop(stop_id)
-
-# Get predictions for a stop
-predictions = bus_service.fetch_predictions(stop_id)
-
-# Get nearby stops for a route
-# (Nearby stops default to 0.5 miles)
-stops = bus_service.route.nearby_stops
-
-# Change nearby mile radius:
-bus_service.nearby_distance = 2
-```
+`bus_service = BusTime.connection(API_KEY, API_URL?)`
 
 `API_URL` defaults to "https://ctabustracker.com/bustime/api/v2"
+
+### General use
+
+#### Get all routes with directions and stops
+
+Should be used sparingly, such as for initial seeding or periodically refreshing all routes/directions/stops.
+
+`routes = bus_service.fetch_routes_and_directions_and_stops # [<BusRoute id: <String>, name: <String>, directions: [<String>,...], stops: [<BusStop>,...]>,...]`
+
+#### Get all routes
+
+`routes = bus_service.fetch_routes # [<BusRoute id: <String>, name: <String>, directions: [], stops: []>,...]`
+
+#### Get route directions
+
+`route.directions # [<String>,...]`
+
+#### Get route stops
+
+`route.stops  # [<BusStop { id: <String>, name: <String>, lat: <Float>, lon: <Float>, direction: <String>, routes: <Array[<String>,...],...] }`
+
+#### Get stop predictions
+
+`route.stops.first.predictions # [<Prediction { }]`
+
+#### Get current service time
+
+`bus_service.fetch_time # YYYYMMDD HH:MM:SS`
+
+#### Get a single route
+
+`route = bus_service.fetch_route(route_id)`
+
+#### Get a single stop
+
+`stop = bus_service.fetch_stop(stop_id)`
+
+#### Get predictions for a stop
+
+`predictions = bus_service.fetch_predictions(stop_id)`
+
+#### Get nearby stops for a route
+
+(Nearby stops default to 0.5 miles)
+
+`stops = bus_service.route.nearby_stops`
+
+#### Change nearby mile radius:
+
+`bus_service.nearby_distance = 2`
 
 Consult the service provider's developer documentation for non-CTA service URLs.
 
