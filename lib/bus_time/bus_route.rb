@@ -28,6 +28,8 @@ class BusTime::BusRoute
     @directions.each do |direction|
       @stops = BusTime.api.fetch_stops(@id, direction)
     end
+
+    @stops
   end
 
   def display_name
