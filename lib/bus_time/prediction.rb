@@ -3,7 +3,7 @@
 # Service bus stop prediction handling, including prediction retrieval
 # via `BusTime::Api`
 class BusTime::Prediction
-  attr_reader :time, :prediction_type, :delayed, :generated_at,
+  attr_reader :time, :prediction_type, :delayed?, :generated_at,
               :stop_id, :stop_name, :direction
 
   def initialize(route_id, direction, stop_id, arrival_minutes, **opts)
@@ -16,12 +16,8 @@ class BusTime::Prediction
 
     @arrives_at = opts[:arrives_at]
     @prediction_type = opts[:prediction_type] || "arrival"
-    @delayed = opts[:delayed] || false
+    @delayed? = opts[:delayed] || false
 
     @generated_at = opts[:generated_at] || DateTime.now
-  end
-
-  def delayed?
-    @delayed
   end
 end
