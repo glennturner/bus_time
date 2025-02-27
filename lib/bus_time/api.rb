@@ -47,8 +47,8 @@ class BusTime::Api
     fetch_stops_by_params(rt: route_id, dir: direction)
   end
 
-  def fetch_predictions(stop_id)
-    request("getpredictions", { stpid: stop_id })["prd"].map do |prediction|
+  def fetch_predictions(stop_ids)
+    request("getpredictions", { stpid: stop_ids.join(",") })["prd"].map do |prediction|
       assemble_prediction(prediction)
     end
   end
