@@ -14,4 +14,10 @@ class BusTime::ApiTest < BusTime::BusTimeTest
       assert_not_empty route.stops
     end
   end
+
+  test "if retrieves predictions" do
+    predictions = @bus_time.fetch_predictions(expected_stop_ids)
+    assert_not_empty predictions
+    assert_equal predictions.map(&:stop_id), expected_stop_ids
+  end
 end

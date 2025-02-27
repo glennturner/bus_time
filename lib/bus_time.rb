@@ -26,6 +26,7 @@ module BusTime
   end
 end
 
+require "date"
 require "zeitwerk"
 loader = Zeitwerk::Loader.for_gem
 loader.setup

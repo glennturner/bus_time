@@ -9,6 +9,7 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
     @bus_time = BusTime.connection("FAKE_API_KEY")
 
     stub_routes
+    stub_predictions
   end
 
   def stub_routes
@@ -25,6 +26,13 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
                                      dir: direction["dir"]
                                    })
     end
+  end
+
+  def stub_predictions
+    register_stub_request_action("getpredictions", expected_body("predictions"),
+                                  params: {
+                                    stpid: expected_stop_ids.join(",")
+                                  })
   end
 
   def register_stub_request_action(action, expected_response_body, params: {})
@@ -83,15 +91,23 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
   def expected_predictions
     [
       {
-        "rt" => "52",
-        "rtdir" => "Northbound",
-        "stpid" => "3133",
-        "prdctdn" => "5",
+        "tmstmp" => Time.now.strftime(BusTime::DEFAULT_TS_FORMAT),
         "typ" => "A",
-        "dly" => false,
-        "stpnm" => "3201 S Kedzie",
+        "stpnm" => "Clark & Balmoral",
+        "stpid" => "14787",
+        "vid" => "8788",
+        "dstp" => 5697,
+        "rt" => "22",
+        "rtdd" => "22",
+        "rtdir" => "Southbound",
+        "des" => "Harrison",
         "prdtm" => (Time.now + 300).strftime(BusTime::DEFAULT_TS_FORMAT),
-        "tmstmp" => Time.now.strftime(BusTime::DEFAULT_TS_FORMAT)
+        "tablockid" => "22 -562",
+        "tatripid" => "1040909",
+        "origtatripno" => "259616751",
+        "dly" => false,
+        "prdctdn" => "8",
+        "zone" => ""
       }
     ]
   end
@@ -111,5 +127,9 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
         "lon" => -87.668331999999
       }
     ]
+  end
+
+  def expected_stop_ids
+    expected_predictions.map { |prediction| prediction["stpid"] }
   end
 end
