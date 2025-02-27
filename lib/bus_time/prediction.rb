@@ -5,7 +5,8 @@
 class BusTime::Prediction
   attr_reader :time, :prediction_type, :delayed, :generated_at,
               :stop_id, :stop_name, :direction, :arrival_minutes,
-              :arrives_at, :stop_name
+              :arrives_at, :stop_name, :vehicle_id, :destination,
+              :trip_id
 
   def initialize(route_id, direction, stop_id, arrival_minutes, **opts)
     @route_id = route_id
@@ -13,6 +14,10 @@ class BusTime::Prediction
     @direction = direction
     @arrival_minutes = arrival_minutes
 
+    @trip_id = opts[:trip_id]
+    @vehicle_id = opts[:vehicle_id]
+
+    @destination = opts[:destination]
     @stop_name = opts[:stop_name]
 
     @arrives_at = opts[:arrives_at]

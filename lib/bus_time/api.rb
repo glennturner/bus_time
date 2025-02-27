@@ -134,9 +134,12 @@ class BusTime::Api
                             prediction["stpid"],
                             prediction["prdctdn"],
                             arrives_at: DateTime.parse(prediction["prdtm"]),
+                            destination: prediction["des"],
                             prediction_type: prediction["typ"],
                             delayed: prediction["dly"],
                             stop_name: prediction["stpnm"],
+                            vehicle_id: prediction["vid"],
+                            trip_id: prediction["tatripid"],
                             generated_at: DateTime.parse(prediction["tmstmp"]))
   end
 end
