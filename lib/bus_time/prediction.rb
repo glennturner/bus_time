@@ -4,7 +4,7 @@
 # via `BusTime::Api`
 class BusTime::Prediction
   attr_reader :time, :prediction_type, :delayed, :generated_at,
-              :stop_id, :stop_name, :direction, :arrival_minutes,
+              :route_id, :stop_id, :stop_name, :direction, :arrival_minutes,
               :arrives_at, :stop_name, :vehicle_id, :destination,
               :trip_id
 
