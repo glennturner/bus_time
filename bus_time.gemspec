@@ -23,9 +23,9 @@ Gem::Specification.new do |gem|
   gem.add_dependency "zeitwerk", "~> 2.7"
 
   # Development/test dependencies
-  gem.add_dependency "m", "~> 1.6"
-  gem.add_dependency "rake", "~> 13.2"
-  gem.add_dependency "rubocop", "~> 1.6"
-  gem.add_dependency "test-unit", "~> 3.6"
-  gem.add_dependency "webmock", "~> 3.24"
+  gem.add_development_dependency "m", "~> 1.6"
+  gem.add_development_dependency "rake", "~> 13.2"
+  gem.add_development_dependency "rubocop", "~> 1.6"
+  gem.add_development_dependency "test-unit", "~> 3.6"
+  gem.add_development_dependency "webmock", "~> 3.24"
 end
