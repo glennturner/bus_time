@@ -2,8 +2,6 @@
 
 # BusTime API interface and response handling
 class BusTime::Api
-  attr_accessor :api_key, :api_url
-
   SUPPORTED_ACTIONS = %w[
     gettime getroutes getdirections
     getstops getpredictions getservicebulletins
@@ -12,7 +10,7 @@ class BusTime::Api
   BASE_RESPONSE_PROP = "bustime-response"
 
   def initialize(api_key, api_url = nil)
-    @api_key = api_key
+    @@api_key = api_key
     @api_url = api_url || "https://ctabustracker.com/bustime/api/v2"
   end
 
@@ -92,7 +90,7 @@ class BusTime::Api
   end
 
   def request_uri(action, params = {})
-    params[:key] = @api_key
+    params[:key] = @@api_key
     params[:format] = "json"
     params[:locale] = "en"
 
