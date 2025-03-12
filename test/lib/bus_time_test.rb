@@ -57,16 +57,16 @@ class BusTime::BusTimeTest < Test::Unit::TestCase
   end
 
   test "fetch predictions" do
-    stop_id = expected_stops.first["stpid"]
+    stop_ids = expected_stop_ids
 
     stub_request_action(
-      "getpredictions", { stpid: stop_id }
+      "getpredictions", { stpid: stop_ids }
     ).to_return(body: JSON.generate(expected_body("predictions")))
 
-    predictions = @bus_time.fetch_predictions(stop_id)
+    predictions = @bus_time.fetch_predictions(stop_ids)
 
     assert_not_empty predictions
-    assert_equal predictions.first.stop_id, stop_id
+    assert_equal predictions.map(&:stop_id), stop_ids
   end
 
   test "fetch bulletins" do
